@@ -30,7 +30,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.0.0)
 Imports: nlme, stats, graphics, utils
-Suggests: testthat (>= 3.0.0), knitr, rmarkdown
+Suggests: testthat (>= 3.0.0), knitr, rmarkdown, shiny
 VignetteBuilder: knitr
 URL: https://github.com/bitansa/iPEB
 BugReports: https://github.com/bitansa/iPEB/issues

@@ -1,8 +1,7 @@
 # Companion Shiny app for the iPEB package.
-# This app is NOT part of the CRAN package (it lives outside the build via
-# .Rbuildignore). Run it with:
-#   shiny::runApp("shiny-app")
-# Requires: shiny, iPEB (install the package first).
+# Launched via iPEB::run_app(), or directly with
+#   shiny::runApp(system.file("shiny-app", package = "iPEB"))
+# Requires the 'shiny' package (a Suggested dependency of iPEB).
 
 library(shiny)
 library(iPEB)
