@@ -1,0 +1,110 @@
+---
+title: "Getting started with iPEB"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with iPEB}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Overview
+
+`iPEB` (improved Parametric Empirical Bayes) analyses longitudinal biomarker
+data for early-detection screening. It combines a *time-gap-aware*
+standardization layer with *objective-driven* multi-marker weighting: each
+subject's history is modelled so that prediction uncertainty grows with the gap
+between visits, and marker weights are learned to optimize a clinical objective
+you choose rather than opaque tuning parameters.
+
+```{r}
+library(iPEB)
+data(ipeb_example)
+str(ipeb_example)
+```
+
+The data are in long format: one row per subject-visit, with a subject `id`, a
+`case` indicator (1 = case, 0 = control), a visit `time` (years since the first
+visit), `time_to_dx` (days from the visit to diagnosis), and biomarkers
+`m1`--`m3`.
+
+```{r}
+train <- subset(ipeb_example, split == "train")
+test  <- subset(ipeb_example, split == "test")
+```
+
+## Fitting a model
+
+`ipeb()` fits on the training data. Here we optimize sensitivity at 95%
+specificity. (We use i.i.d. innovations and no random slope purely to keep this
+vignette fast; the defaults `innovation = "auto"` and `slope = "auto"` choose
+gap-aware AR(1)/OU innovations and a slope when the data support them.)
+
+```{r}
+fit <- ipeb(train, markers = c("m1", "m2", "m3"),
+            objective = "sensitivity", alpha = 0.95,
+            innovation = "iid", slope = "off")
+fit
+```
+
+The printed summary shows the chosen combiner variant (scalar or multivariate),
+the operating specificity, the layer configuration, and the learned weights.
+
+## Scoring and evaluating new subjects
+
+`predict()` returns a per-visit iPEB score for new data, and `evaluate()`
+reports per-patient sensitivity and median lead time with per-visit specificity
+at the operating points you request. Thresholds are calibrated on the training
+controls and applied unchanged to the test subjects.
+
+```{r}
+head(predict(fit, test))
+
+evaluate(fit, test, specificities = c(0.90, 0.95, 0.99))
+```
+
+## Changing the objective
+
+The same markers can be optimized for a different clinical goal. The lead-time
+objective rewards earlier detection while retaining sensitivity:
+
+```{r}
+fit_lt <- ipeb(train, markers = c("m1", "m2", "m3"),
+               objective = "leadtime", innovation = "iid", slope = "off")
+evaluate(fit_lt, test, specificities = 0.95)
+```
+
+## Feature selection
+
+When a smaller panel is preferred, iPEB can select markers by objective-driven
+backward elimination to a target size:
+
+```{r}
+fit_sel <- ipeb(train, markers = c("m1", "m2", "m3"),
+                objective = "sensitivity", select = "backward", n_markers = 2,
+                innovation = "iid", slope = "off")
+fit_sel$markers
+```
+
+## One-call workflow
+
+`ipeb_run()` fits and evaluates in a single call:
+
+```{r}
+res <- ipeb_run(train, test, markers = c("m1", "m2", "m3"),
+                objective = "sensitivity", innovation = "iid", slope = "off",
+                specificities = c(0.90, 0.95, 0.99))
+res$evaluation
+```
+
+## Notes
+
+* Sensitivity and lead time are per patient over the whole pre-diagnostic
+  trajectory; a subject is detected if *any* pre-diagnostic visit crosses the
+  threshold. A `window` (in months) may be supplied to restrict the objective to
+  a fixed horizon, but the default uses the whole trajectory.
+* Specificity is per visit and is calibrated on the training controls, so the
+  threshold set at fitting is applied unchanged to new data.

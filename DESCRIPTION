@@ -1,0 +1,38 @@
+Package: iPEB
+Type: Package
+Title: Improved Parametric Empirical Bayes for Longitudinal Biomarker Analysis
+Version: 0.1.0
+Authors@R: c(
+    person("Bitan", "Sarkar", email = "bitansarkar010899@gmail.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0009-0000-5178-5934")),
+    person(c("Ana", "Maria"), "Kenney", role = "aut"),
+    person(c("James", "P."), "Long", role = "aut"),
+    person(c("Johannes", "F."), "Fahrmann", role = "aut"),
+    person("Samir", "Hanash", role = "aut"),
+    person("Kim-Anh", "Do", role = "aut"),
+    person("Ehsan", "Irajizad", role = "aut"))
+Description: Improved Parametric Empirical Bayes ('iPEB') extends parametric
+    empirical Bayes for longitudinal biomarker analysis with a time-gap-aware
+    standardization layer, covariate adjustment, and objective-driven
+    multi-marker weighting. The layer models each subject's biomarker history
+    with a random intercept (and an optional random slope) and autocorrelated,
+    gap-scaled residuals, so that prediction uncertainty grows with the time
+    between visits and per-visit specificity is preserved under irregular
+    sampling. Marker weights are learned to optimize a user-selected clinical
+    objective -- maximizing sensitivity at a fixed specificity, extending
+    detection lead time, or a combined objective -- with optional feature
+    selection and a choice of scalar or multivariate combiner. Functions for
+    fitting, prediction, and evaluation (sensitivity, lead time, and
+    specificity at chosen operating points) are provided. A manuscript
+    describing the method is in preparation.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 4.0.0)
+Imports: nlme, stats, graphics, utils
+Suggests: testthat (>= 3.0.0), knitr, rmarkdown
+VignetteBuilder: knitr
+URL: https://github.com/bitansa/iPEB
+BugReports: https://github.com/bitansa/iPEB/issues
+RoxygenNote: 7.3.3
+Config/testthat/edition: 3

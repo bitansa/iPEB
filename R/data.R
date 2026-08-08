@@ -1,0 +1,20 @@
+#' Synthetic longitudinal biomarker example
+#'
+#' A small, entirely simulated longitudinal cohort used to illustrate the
+#' package. Each subject contributes several irregularly spaced visits with
+#' three biomarkers. In cases, marker \code{m1} rises from roughly two years
+#' before diagnosis and \code{m2} rises late (a few months before), while
+#' \code{m3} is uninformative; controls have no pre-diagnostic rise. No real
+#' patient data are used.
+#'
+#' @format A data frame with one row per subject-visit and columns:
+#' \describe{
+#'   \item{id}{Subject identifier.}
+#'   \item{case}{Case indicator (1 = case, 0 = control).}
+#'   \item{time}{Visit time in years since the subject's first visit.}
+#'   \item{time_to_dx}{Days from the visit to diagnosis (positive).}
+#'   \item{m1, m2, m3}{Biomarker measurements.}
+#'   \item{split}{Suggested \code{"train"}/\code{"test"} split by subject.}
+#' }
+#' @source Simulated by \code{data-raw/make_example.R}.
+"ipeb_example"

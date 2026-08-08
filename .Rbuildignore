@@ -1,0 +1,11 @@
+^shiny-app$
+^reproducibility$
+^data-raw$
+^\.github$
+^\.git$
+^LICENSE\.md$
+^README\.Rmd$
+^.*\.Rproj$
+^\.Rproj\.user$
+^cran-comments\.md$
+^\.Rbuildignore$
