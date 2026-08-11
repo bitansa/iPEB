@@ -46,11 +46,35 @@ cat(sprintf("\nScenario 3 (longitudinal trend): mean (sd) over %d cohorts\n", le
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
 cat("\nPaper (Table 1): 0.880/0.529/0.548 ; 0.877/0.518/0.567 ; 0.974/0.846/0.632 (AUC / Sens / Lead)\n")
 
-png("reproduce_S3_sensitivity.png", width = 2600, height = 2000, res = 300)
-graphics::par(mar = c(9, 5, 2, 1))
+png("reproduce_S3_sensitivity.png", width = 2600, height = 2100, res = 300)
+graphics::par(mar = c(7, 5, 2, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
 bp <- barplot(means[, "SensW"], col = c("grey60", "#93c5fd", "#db2777"),
-              names.arg = rownames(means), las = 2,
+              names.arg = rep("", nrow(means)),
               ylab = "Sensitivity at 95% specificity", ylim = c(0, max(means[, "SensW"]) * 1.2))
-text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3)
+text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
+# compact 3-line horizontal labels under each bar (upright, no overlap)
+labs <- c("PEB\nintercept\ni.i.d.", "iPEB\nintercept\ni.i.d.", "iPEB\nslope\nOU")
+text(x = bp, y = par("usr")[3] - 0.03 * diff(par("usr")[3:4]), labels = labs,
+     xpd = TRUE, adj = c(0.5, 1), cex = 1.4)
 dev.off()
 cat("Wrote reproduce_S3_sensitivity.png\n")
+
+# Healthy-trajectory figure (reproduces the S3 trend panel): example healthy
+# subjects whose marker levels drift over time under the random slope + AR(1)/OU.
+dfx   <- do.call(simulate_cohort, c(gen, seed = 1))
+d2max <- max(dfx$draw_to_dx_days)
+set.seed(1); ex <- sample(unique(dfx$IDvar[dfx$D == 0]), 8)
+sub   <- dfx[dfx$IDvar %in% ex, ]
+png("reproduce_S3_trajectories.png", width = 2600, height = 2200, res = 300)
+graphics::par(mar = c(5, 5, 3, 1))
+plot(NA, xlim = c(0, d2max / 365.25), ylim = range(sub$M1),
+     xlab = "Time from first visit (years)", ylab = "Marker M1 (healthy subjects)",
+     main = "Example healthy trajectories", cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
+cols <- grDevices::hcl.colors(length(ex), "Dark 3")
+for (k in seq_along(ex)) {
+  s <- dfx[dfx$IDvar == ex[k], ]; o <- order(s$draw_to_dx_days, decreasing = TRUE)
+  lines((d2max - s$draw_to_dx_days[o]) / 365.25, s$M1[o], type = "b", pch = 16,
+        lwd = 1.8, col = cols[k])
+}
+dev.off()
+cat("Wrote reproduce_S3_trajectories.png\n")

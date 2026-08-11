@@ -143,11 +143,11 @@ cat(sprintf("iPEB beat: best-marginal in %d/48, equal-weight in %d/48, PCA-1 in 
             sum(sens_tab[, "iPEB"] > sens_tab[, "PCA-1"])))
 cat("Paper: 39/48, 46/48, 47/48\n")
 
-png("reproduce_factorial_summary.png", width = 2600, height = 1800, res = 300)
-graphics::par(mar = c(10, 5, 1.5, 1))
+png("reproduce_factorial_summary.png", width = 2600, height = 2600, res = 300)
+graphics::par(mar = c(16, 5, 1.5, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
 m <- colMeans(sens_tab)
-bp <- barplot(m, col = c("grey65", "#60a5fa", "#a78bfa", "#db2777"), las = 2,
+bp <- barplot(m, col = c("grey65", "#60a5fa", "#a78bfa", "#db2777"), las = 2, cex.names = 1.6,
               ylab = "Sensitivity at 95% specificity", ylim = c(0, max(m) * 1.25))
-text(bp, m, sprintf("%.3f", m), pos = 3)
+text(bp, m, sprintf("%.3f", m), pos = 3, cex = 1.6)
 dev.off()
 cat("Wrote reproduce_factorial_summary.png and the per-cell CSVs\n")

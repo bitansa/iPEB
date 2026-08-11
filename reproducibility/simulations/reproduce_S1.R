@@ -53,10 +53,11 @@ g   <- seq(0, 1, 0.02)
 mpb <- Reduce(`+`, lapply(acc, `[[`, "roc_peb"))  / length(acc)
 mip <- Reduce(`+`, lapply(acc, `[[`, "roc_ipeb")) / length(acc)
 png("reproduce_S1_ROC.png", width = 2400, height = 2000, res = 300)
+graphics::par(mar = c(5, 5, 3, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
 plot(g, mip, type = "l", lwd = 3, col = "#db2777", xlab = "1 - specificity",
      ylab = "Sensitivity", main = "Simulation 1: mean ROC")
 lines(g, mpb, lwd = 3, col = "#2563eb"); abline(0, 1, lty = 3, col = "grey60")
-legend("bottomright", bty = "n", lwd = 3, col = c("#2563eb", "#db2777"),
+legend("bottomright", bty = "n", lwd = 3, cex = 1.6, col = c("#2563eb", "#db2777"),
        legend = sprintf("%-5s AUC %.3f", c("PEB", "iPEB"),
                         c(auc_trap(g, mpb), auc_trap(g, mip))))
 dev.off()

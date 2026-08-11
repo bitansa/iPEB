@@ -47,12 +47,31 @@ cat("\nPaper (Table 1): PEB 0.973 / 0.844 / 0.252 ; iPEB 0.995 / 0.998 / 1.193 (
 # Lead-time figure (reproduces the S2 bar panel).
 ord <- c("PEB", "PEB M1", "PEB M2", "iPEB")
 png("reproduce_S2_leadtime.png", width = 2600, height = 2200, res = 300)
-graphics::par(mar = c(8, 5, 2, 1))
+graphics::par(mar = c(8, 5, 2, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
 bp <- barplot(means[ord, "LT"], col = c("#2563eb", "#60a5fa", "#a5b4fc", "#db2777"),
-              names.arg = ord, las = 2, ylab = "Median lead time (yr)",
+              names.arg = ord, las = 2, cex.names = 1.6, ylab = "Median lead time (yr)",
               ylim = c(0, max(means[, "LT"]) * 1.2))
-text(bp, means[ord, "LT"], sprintf("%.2f", means[ord, "LT"]), pos = 3)
+text(bp, means[ord, "LT"], sprintf("%.2f", means[ord, "LT"]), pos = 3, cex = 1.6)
 mtext(sprintf("Sens:  %s", paste(sprintf("%s %.2f", ord, means[ord, "SensW"]), collapse = "   ")),
-      side = 1, line = 6.2, cex = 0.9)
+      side = 1, line = 6.2, cex = 1.4)
 dev.off()
 cat("Wrote reproduce_S2_leadtime.png\n")
+
+# Marker-trajectory figure (reproduces the S2 trajectory panel): mean case
+# trajectories, showing M1 rising early and M2 rising late before diagnosis.
+dfx <- do.call(simulate_cohort, c(gen, seed = 1))
+cs  <- dfx[dfx$D == 1, ]
+m1  <- tapply(cs$M1, cs$draw_to_dx_days, mean)
+m2  <- tapply(cs$M2, cs$draw_to_dx_days, mean)
+xx  <- as.numeric(names(m1)) / 365.25            # years before diagnosis
+png("reproduce_S2_trajectories.png", width = 2600, height = 2200, res = 300)
+graphics::par(mar = c(5, 5, 3, 1))
+plot(xx, m1, type = "b", pch = 16, lwd = 2.5, col = "#2563eb", xlim = rev(range(xx)),
+     ylim = range(m1, m2), xlab = "Years before diagnosis",
+     ylab = "Mean marker level (cases)", main = "Mean case marker trajectories",
+     cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
+lines(xx, m2, type = "b", pch = 17, lwd = 2.5, col = "#db2777")
+legend("topright", c("M1 (early-rising)", "M2 (late-rising)"), col = c("#2563eb", "#db2777"),
+       pch = c(16, 17), lwd = 2.5, bty = "n", cex = 1.6)
+dev.off()
+cat("Wrote reproduce_S2_trajectories.png\n")

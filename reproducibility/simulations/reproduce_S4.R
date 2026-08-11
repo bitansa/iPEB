@@ -113,7 +113,7 @@ bp <- barplot(means[, "SensW"], col = c("grey60", "#db2777"), names.arg = rownam
               las = 1, ylab = "Sensitivity at 95% specificity",
               main = "Detection under irregular visit spacing",
               ylim = c(0, max(means[, "SensW"], na.rm = TRUE) * 1.25),
-              cex.lab = 1.4, cex.axis = 1.2, cex.main = 1.4, cex.names = 1.2)
-text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.2)
+              cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7, cex.names = 1.6)
+text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
 dev.off()
 cat("Wrote reproduce_S4_sensitivity.png\n")
