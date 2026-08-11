@@ -45,6 +45,29 @@ ipeb_run(train, test, markers = c("m1", "m2", "m3"),
          objective = "leadtime", specificities = c(0.90, 0.95, 0.99))
 ```
 
+## Recovering conventional PEB
+
+Conventional (marginal) PEB is a special case of iPEB: an intercept-only,
+i.i.d. layer on a single marker (no gap-scaling, no multi-marker weighting).
+Running it through the same package makes iPEB-versus-PEB comparisons exactly
+apples-to-apples -- identical layer and thresholding, only the modeling options
+differ. To score a plain PEB baseline for one marker:
+
+```r
+# Conventional PEB: one marker, i.i.d. innovations, intercept-only mean model.
+peb <- ipeb(train, markers = c("m1"),
+            id = "id", case = "case", time = "time", time_to_dx = "time_to_dx",
+            objective = "sensitivity", alpha = 0.95,
+            slope = "off", innovation = "iid")
+evaluate(peb, test, specificities = c(0.90, 0.95, 0.99))
+```
+
+Turning on `innovation = "ar1"` and/or `slope = "on"` for the same data recovers
+the time-gap-aware iPEB layer, so PEB and iPEB can be compared directly (this is
+exactly how the baselines are computed in the reproducibility scripts). A fixed
+multi-marker PEB composite (e.g. a published panel) can be scored the same way by
+passing that composite as a single marker.
+
 ## Key options
 
 | Argument | What it controls |

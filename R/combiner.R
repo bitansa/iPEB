@@ -17,6 +17,7 @@
                  error = function(e) mu)
   w0 <- w0 / sqrt(sum(w0^2))
   if (lam2 == 0 && lam3 == 0) return(w0)                 # ROUTE 1: closed form
+  if (ncol(X) == 1L) return(w0)                          # single marker: nothing to optimize
   obj <- function(w) {                                   # ROUTE 2: search
     wn <- w / sqrt(sum(w^2))
     .loss(as.numeric(X %*% wn), D, ids, ttd,
