@@ -1,5 +1,9 @@
 # iPEB
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/bitansa/iPEB/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bitansa/iPEB/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 **Improved Parametric Empirical Bayes for Longitudinal Biomarker Analysis**
 
 iPEB extends parametric empirical Bayes (PEB) for longitudinal biomarker
