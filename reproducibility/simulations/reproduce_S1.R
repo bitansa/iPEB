@@ -46,7 +46,7 @@ sds   <- apply(arr, c(1, 2), sd,   na.rm = TRUE)
 
 cat(sprintf("\nScenario 1 (marker heterogeneity): mean (sd) over %d cohorts\n", length(acc)))
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
-cat("\nPaper (Table 1): PEB 0.972 / 0.829 / 0.633 ; iPEB 0.984 / 0.923 / 0.619  (AUC / Sens / Lead)\n")
+cat("\nPaper (Table 1): PEB 0.972 / 0.829 / 0.633 ; iPEB 0.984 / 0.923 / 0.621  (AUC / Sens / Lead)\n")
 
 # Persist the exact mean (sd) numbers behind the S1 rows of Table 1, mirroring the
 # CSVs written for S3, S4, and the factorial, so the table is fully reproducible.

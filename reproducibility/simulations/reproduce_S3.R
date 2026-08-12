@@ -44,7 +44,7 @@ sds   <- apply(arr, c(1, 2), sd,   na.rm = TRUE)
 
 cat(sprintf("\nScenario 3 (longitudinal trend): mean (sd) over %d cohorts\n", length(acc)))
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
-cat("\nPaper (Table 1): 0.880/0.529/0.548 ; 0.877/0.518/0.567 ; 0.974/0.846/0.632 (AUC / Sens / Lead)\n")
+cat("\nPaper (Table 1): 0.880/0.529/0.548 ; 0.877/0.518/0.563 ; 0.974/0.846/0.632 (AUC / Sens / Lead)\n")
 
 # Persist the exact mean (sd) numbers behind the S3 rows of Table 1, mirroring the
 # CSVs written for S4 and the factorial, so the table is fully reproducible.

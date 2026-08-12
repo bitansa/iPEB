@@ -42,7 +42,7 @@ sds   <- apply(arr, c(1, 2), sd,   na.rm = TRUE)
 
 cat(sprintf("\nScenario 2 (differential timing): mean (sd) over %d cohorts\n", length(acc)))
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
-cat("\nPaper (Table 1): PEB 0.973 / 0.844 / 0.252 ; iPEB 0.995 / 0.998 / 1.193 (AUC / Sens / Lead)\n")
+cat("\nPaper (Table 1): PEB 0.973 / 0.844 / 0.252 ; iPEB 0.995 / 0.998 / 1.194 (AUC / Sens / Lead)\n")
 
 # Persist the exact mean (sd) numbers behind the S2 rows of Table 1, mirroring the
 # CSVs written for S3, S4, and the factorial, so the table is fully reproducible.
