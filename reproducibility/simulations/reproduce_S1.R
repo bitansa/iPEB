@@ -48,6 +48,17 @@ cat(sprintf("\nScenario 1 (marker heterogeneity): mean (sd) over %d cohorts\n", 
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
 cat("\nPaper (Table 1): PEB 0.972 / 0.829 / 0.633 ; iPEB 0.984 / 0.923 / 0.619  (AUC / Sens / Lead)\n")
 
+# Persist the exact mean (sd) numbers behind the S1 rows of Table 1, mirroring the
+# CSVs written for S3, S4, and the factorial, so the table is fully reproducible.
+s1_summary <- data.frame(
+  method    = rownames(means),
+  AUC_mean  = means[, "AUC"],   AUC_sd  = sds[, "AUC"],
+  Sens_mean = means[, "SensW"], Sens_sd = sds[, "SensW"],
+  Lead_mean = means[, "LT"],    Lead_sd = sds[, "LT"],
+  row.names = NULL)
+utils::write.csv(s1_summary, "reproduce_S1_means.csv", row.names = FALSE)
+cat("Wrote reproduce_S1_means.csv\n")
+
 # Mean test ROC (PEB vs iPEB) with AUCs -- reproduces Web Figure 1.
 g   <- seq(0, 1, 0.02)
 mpb <- Reduce(`+`, lapply(acc, `[[`, "roc_peb"))  / length(acc)

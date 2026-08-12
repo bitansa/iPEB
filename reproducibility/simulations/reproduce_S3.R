@@ -46,6 +46,17 @@ cat(sprintf("\nScenario 3 (longitudinal trend): mean (sd) over %d cohorts\n", le
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
 cat("\nPaper (Table 1): 0.880/0.529/0.548 ; 0.877/0.518/0.567 ; 0.974/0.846/0.632 (AUC / Sens / Lead)\n")
 
+# Persist the exact mean (sd) numbers behind the S3 rows of Table 1, mirroring the
+# CSVs written for S4 and the factorial, so the table is fully reproducible.
+s3_summary <- data.frame(
+  method    = rownames(means),
+  AUC_mean  = means[, "AUC"],   AUC_sd  = sds[, "AUC"],
+  Sens_mean = means[, "SensW"], Sens_sd = sds[, "SensW"],
+  Lead_mean = means[, "LT"],    Lead_sd = sds[, "LT"],
+  row.names = NULL)
+utils::write.csv(s3_summary, "reproduce_S3_means.csv", row.names = FALSE)
+cat("Wrote reproduce_S3_means.csv\n")
+
 png("reproduce_S3_sensitivity.png", width = 2600, height = 2100, res = 300)
 graphics::par(mar = c(7, 5, 2, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
 bp <- barplot(means[, "SensW"], col = c("grey60", "#93c5fd", "#db2777"),

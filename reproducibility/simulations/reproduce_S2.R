@@ -44,6 +44,17 @@ cat(sprintf("\nScenario 2 (differential timing): mean (sd) over %d cohorts\n", l
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
 cat("\nPaper (Table 1): PEB 0.973 / 0.844 / 0.252 ; iPEB 0.995 / 0.998 / 1.193 (AUC / Sens / Lead)\n")
 
+# Persist the exact mean (sd) numbers behind the S2 rows of Table 1, mirroring the
+# CSVs written for S3, S4, and the factorial, so the table is fully reproducible.
+s2_summary <- data.frame(
+  method    = rownames(means),
+  AUC_mean  = means[, "AUC"],   AUC_sd  = sds[, "AUC"],
+  Sens_mean = means[, "SensW"], Sens_sd = sds[, "SensW"],
+  Lead_mean = means[, "LT"],    Lead_sd = sds[, "LT"],
+  row.names = NULL)
+utils::write.csv(s2_summary, "reproduce_S2_means.csv", row.names = FALSE)
+cat("Wrote reproduce_S2_means.csv\n")
+
 # Lead-time figure (reproduces the S2 bar panel).
 ord <- c("PEB", "PEB M1", "PEB M2", "iPEB")
 png("reproduce_S2_leadtime.png", width = 2600, height = 2200, res = 300)
