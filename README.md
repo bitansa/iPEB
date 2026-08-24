@@ -88,6 +88,19 @@ Sensitivity and lead time are scored per patient over the whole pre-diagnostic
 trajectory; specificity is scored per visit and calibrated on the training
 controls, then applied unchanged to new data.
 
+## Shiny app
+
+A point-and-click interface to the same engine ships with the package:
+
+```r
+iPEB::run_app()
+```
+
+It exposes the objective, operating specificity, slope and innovation switches,
+covariates, optional feature selection, and evaluation specificities, and runs
+`ipeb()`/`evaluate()` under the hood. A hosted, browser-based version for users
+without R will be linked here once deployed.
+
 ## Data format
 
 A long data frame with one row per subject-visit: a subject id, a case

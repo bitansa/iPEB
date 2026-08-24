@@ -10,14 +10,27 @@ remotes::install_github("bitansa/iPEB")
 
 ## Simulations
 
-`simulations/reproduce_leadtime.R` is fully self-contained: it simulates a
-differential-timing cohort and, using only `library(iPEB)`, shows that an
-early-rising marker alone gives long lead but lower sensitivity, a late-rising
-marker gives high sensitivity but short lead, and iPEB combines both — with the
-lead-time objective extending lead further. Run:
+Five self-contained scripts in `simulations/` reproduce the paper's simulation
+results using only `library(iPEB)` (shared scaffolding in `sim_helpers.R`).
+Each writes its summary numbers to a `*_means.csv` and its figure(s) to
+300-dpi PNGs alongside the script:
+
+- `reproduce_S1.R` — Scenario 1 (marker heterogeneity): sensitivity/AUC rows
+  of Table 1 plus the mean-ROC figure (Web Figure 1).
+- `reproduce_S2.R` — Scenario 2 (differential timing): an early-rising versus a
+  late-rising marker; iPEB under the lead-time objective combines long lead
+  with high sensitivity (Table 1 rows and the lead-time/trajectory figures).
+- `reproduce_S3.R` — Scenario 3 (longitudinal drift + serial correlation):
+  value of the time-gap-aware layer (intercept/i.i.d. versus slope + OU).
+- `reproduce_S4.R` — Scenario 4 (irregular visit spacing): the S3 mechanism on
+  an irregular 3-month-to-2-year visit grid; gap-ignorant PEB versus gap-aware
+  iPEB (Web Figure 2).
+- `reproduce_factorial.R` — the 48-cell factorial study (Web Tables 1-2 and
+  the factorial summary figure).
 
 ```r
-source("simulations/reproduce_leadtime.R")
+setwd("simulations")
+source("reproduce_S1.R")   # likewise S2, S3, S4, factorial
 ```
 
 ## Lung cohort
