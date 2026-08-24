@@ -104,7 +104,13 @@ sds   <- apply(arr, c(1, 2), sd,   na.rm = TRUE)
 
 cat(sprintf("\nScenario 4 (irregular visit spacing): mean (sd) over %d cohorts\n", length(acc)))
 print(matrix(sprintf("%.3f (%.3f)", means, sds), nrow(means), dimnames = dimnames(means)), quote = FALSE)
-write.csv(round(means, 4), "reproduce_S4_means.csv")
+s4_summary <- data.frame(
+  method    = rownames(means),
+  AUC_mean  = means[, "AUC"],   AUC_sd  = sds[, "AUC"],
+  Sens_mean = means[, "SensW"], Sens_sd = sds[, "SensW"],
+  Lead_mean = means[, "LT"],    Lead_sd = sds[, "LT"],
+  row.names = NULL)
+utils::write.csv(s4_summary, "reproduce_S4_means.csv", row.names = FALSE)
 
 ## ---- Figure: sensitivity (PEB vs iPEB) -------------------------------------
 png("reproduce_S4_sensitivity.png", width = 2600, height = 2000, res = 300)
@@ -112,8 +118,11 @@ graphics::par(mar = c(6, 5, 3, 1))
 bp <- barplot(means[, "SensW"], col = c("grey60", "#db2777"), names.arg = rownames(means),
               las = 1, ylab = "Sensitivity at 95% specificity",
               main = "Detection under irregular visit spacing",
-              ylim = c(0, max(means[, "SensW"], na.rm = TRUE) * 1.25),
+              ylim = c(0, max(means[, "SensW"] + sds[, "SensW"] / sqrt(length(acc)), na.rm = TRUE) * 1.25),
               cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7, cex.names = 1.6)
-text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
+ses <- sds / sqrt(length(acc))          # Monte Carlo standard error of the mean
+arrows(bp, means[, "SensW"] - ses[, "SensW"], bp, means[, "SensW"] + ses[, "SensW"],
+       angle = 90, code = 3, length = 0.06, lwd = 1.6)   # error bars: +/- 1 MC SE
+text(bp, means[, "SensW"] + ses[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
 dev.off()
 cat("Wrote reproduce_S4_sensitivity.png\n")

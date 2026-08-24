@@ -59,10 +59,14 @@ cat("Wrote reproduce_S3_means.csv\n")
 
 png("reproduce_S3_sensitivity.png", width = 2600, height = 2100, res = 300)
 graphics::par(mar = c(7, 5, 2, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
+ses <- sds / sqrt(length(acc))          # Monte Carlo standard error of the mean
 bp <- barplot(means[, "SensW"], col = c("grey60", "#93c5fd", "#db2777"),
               names.arg = rep("", nrow(means)),
-              ylab = "Sensitivity at 95% specificity", ylim = c(0, max(means[, "SensW"]) * 1.2))
-text(bp, means[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
+              ylab = "Sensitivity at 95% specificity",
+              ylim = c(0, max(means[, "SensW"] + ses[, "SensW"]) * 1.2))
+arrows(bp, means[, "SensW"] - ses[, "SensW"], bp, means[, "SensW"] + ses[, "SensW"],
+       angle = 90, code = 3, length = 0.06, lwd = 1.6)   # error bars: +/- 1 MC SE
+text(bp, means[, "SensW"] + ses[, "SensW"], sprintf("%.2f", means[, "SensW"]), pos = 3, cex = 1.6)
 # compact 3-line horizontal labels under each bar (upright, no overlap)
 labs <- c("PEB\nintercept\ni.i.d.", "iPEB\nintercept\ni.i.d.", "iPEB\nslope\nOU")
 text(x = bp, y = par("usr")[3] - 0.03 * diff(par("usr")[3:4]), labels = labs,

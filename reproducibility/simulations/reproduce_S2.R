@@ -59,10 +59,13 @@ cat("Wrote reproduce_S2_means.csv\n")
 ord <- c("PEB", "PEB M1", "PEB M2", "iPEB")
 png("reproduce_S2_leadtime.png", width = 2600, height = 2200, res = 300)
 graphics::par(mar = c(8, 5, 2, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
+ses <- sds / sqrt(length(acc))          # Monte Carlo standard error of the mean
 bp <- barplot(means[ord, "LT"], col = c("#2563eb", "#60a5fa", "#a5b4fc", "#db2777"),
               names.arg = ord, las = 2, cex.names = 1.6, ylab = "Median lead time (yr)",
-              ylim = c(0, max(means[, "LT"]) * 1.2))
-text(bp, means[ord, "LT"], sprintf("%.2f", means[ord, "LT"]), pos = 3, cex = 1.6)
+              ylim = c(0, max(means[ord, "LT"] + ses[ord, "LT"]) * 1.2))
+arrows(bp, means[ord, "LT"] - ses[ord, "LT"], bp, means[ord, "LT"] + ses[ord, "LT"],
+       angle = 90, code = 3, length = 0.06, lwd = 1.6)   # error bars: +/- 1 MC SE
+text(bp, means[ord, "LT"] + ses[ord, "LT"], sprintf("%.2f", means[ord, "LT"]), pos = 3, cex = 1.6)
 mtext(sprintf("Sens:  %s", paste(sprintf("%s %.2f", ord, means[ord, "SensW"]), collapse = "   ")),
       side = 1, line = 6.2, cex = 1.4)
 dev.off()

@@ -23,7 +23,7 @@ par_lapply <- function(X, FUN) {
 ## its own lead window. `composite` is the fixed comparator panel scored through
 ## PEB: a fitted-then-frozen logistic combination of the markers (or a supplied
 ## external panel), the simulation analogue of a deployed fixed panel. (The
-## "JAMA 4MP" name in the paper refers only to the published four-marker panel in
+## "4MP" name in the paper refers only to the published four-marker panel in
 ## the real lung analysis, not to this simulated logistic composite.)
 simulate_cohort <- function(n_ctrl = 600, n_case = 200, K = 8, dmax = 1080, dmin = 90,
                             mu = 10, tau = 2, sd_noise = 1,
