@@ -4,15 +4,15 @@ Title: Improved Parametric Empirical Bayes for Longitudinal Biomarker Analysis
 Version: 0.1.0
 Authors@R: c(
     person("Bitan", "Sarkar", email = "bitansarkar010899@gmail.com",
-           role = c("aut", "cre"), comment = c(ORCID = "0009-0000-5178-5934")),
+           role = c("aut", "cre", "cph"), comment = c(ORCID = "0009-0000-5178-5934")),
     person(c("Ana", "Maria"), "Kenney", role = "aut"),
     person(c("James", "P."), "Long", role = "aut"),
     person(c("Johannes", "F."), "Fahrmann", role = "aut"),
     person("Samir", "Hanash", role = "aut"),
     person("Kim-Anh", "Do", role = "aut"),
     person("Ehsan", "Irajizad", role = "aut"))
-Description: Improved Parametric Empirical Bayes ('iPEB') extends parametric
-    empirical Bayes for longitudinal biomarker analysis with a time-gap-aware
+Description: Extends parametric empirical Bayes ('PEB') for longitudinal
+    biomarker screening with a time-gap-aware
     standardization layer, covariate adjustment, and objective-driven
     multi-marker weighting. The layer models each subject's biomarker history
     with a random intercept (and an optional random slope) and autocorrelated,

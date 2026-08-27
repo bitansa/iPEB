@@ -9,6 +9,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+set.seed(1)   # ipeb() draws an internal validation split; fix it for a reproducible vignette
 ```
 
 ## Overview

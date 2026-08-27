@@ -27,6 +27,9 @@
 #' }
 #'
 #' @seealso \code{\link{ipeb}}, \code{\link{evaluate}}
+#' @param seed Optional single number passed to \code{\link{ipeb}} to fix its
+#'   internal validation split, making the fit exactly reproducible.
+#'
 #' @export
 ipeb_run <- function(train, test, markers, id = "id", case = "case",
                      time = "time", time_to_dx = "time_to_dx",
@@ -37,12 +40,12 @@ ipeb_run <- function(train, test, markers, id = "id", case = "case",
                      innovation = c("auto", "ar1", "iid"),
                      select = c("none", "backward"),
                      n_markers = NULL, validation_frac = 0.25,
-                     specificities = NULL, eval_window = NULL) {
+                     specificities = NULL, eval_window = NULL, seed = NULL) {
   fit <- ipeb(train, markers = markers, id = id, case = case, time = time,
               time_to_dx = time_to_dx, covariates = covariates,
               objective = objective, alpha = alpha, window = window,
               slope = slope, innovation = innovation, select = select,
-              n_markers = n_markers, validation_frac = validation_frac)
+              n_markers = n_markers, validation_frac = validation_frac, seed = seed)
   ev <- evaluate(fit, test, specificities = specificities, window = eval_window)
   list(fit = fit, evaluation = ev)
 }

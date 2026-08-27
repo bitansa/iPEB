@@ -7,8 +7,8 @@
 #' held-out evaluation interactively.
 #'
 #' The app requires the \pkg{shiny} package (a suggested dependency); install it
-#' with \code{install.packages("shiny")} if needed. Users without R can instead
-#' use the hosted version linked from the package README.
+#' with \code{install.packages("shiny")} if needed. A hosted, browser-based
+#' version for users without R will be linked from the package README once deployed.
 #'
 #' @param ... Additional arguments passed to \code{\link[shiny]{runApp}} (for
 #'   example \code{launch.browser} or \code{port}).

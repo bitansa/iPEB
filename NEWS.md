@@ -1,6 +1,8 @@
 # iPEB 0.1.0
 
 * First release.
+* `ipeb()` and `ipeb_run()` accept an optional `seed` argument that fixes the
+  internal validation split, making a fit exactly reproducible.
 * `ipeb()` fits the improved Parametric Empirical Bayes model on training data:
   a time-gap-aware standardization layer (random intercept, optional random
   slope, optional AR(1)/OU residual autocorrelation), optional covariate

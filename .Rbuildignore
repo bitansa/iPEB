@@ -3,8 +3,9 @@
 ^\.github$
 ^\.git$
 ^LICENSE\.md$
-^README\.Rmd$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^cran-comments\.md$
 ^\.Rbuildignore$
+^\.Rhistory$
+^\.DS_Store$

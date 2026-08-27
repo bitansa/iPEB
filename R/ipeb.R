@@ -69,6 +69,12 @@
 #' fit
 #' }
 #'
+#' @param seed Optional single number. `ipeb()` draws an internal validation
+#'   split of the training subjects (and, when `select` is not `"none"`, uses
+#'   it for feature selection), so repeated calls on identical data can return
+#'   slightly different weights. Supplying `seed` fixes that draw and makes a
+#'   fit exactly reproducible; the default `NULL` leaves the RNG untouched.
+#'
 #' @seealso \code{\link{predict.ipeb}}, \code{\link{evaluate}}, \code{\link{ipeb_run}}
 #' @export
 ipeb <- function(data, markers, id = "id", case = "case", time = "time",
@@ -78,7 +84,7 @@ ipeb <- function(data, markers, id = "id", case = "case", time = "time",
                  slope = c("auto", "on", "off"),
                  innovation = c("auto", "ar1", "iid"),
                  select = c("none", "backward"),
-                 n_markers = NULL, validation_frac = 0.25) {
+                 n_markers = NULL, validation_frac = 0.25, seed = NULL) {
   objective <- match.arg(objective)
   slope <- match.arg(slope)
   innovation <- match.arg(innovation)
@@ -86,6 +92,15 @@ ipeb <- function(data, markers, id = "id", case = "case", time = "time",
   obj_internal <- if (objective == "sensitivity") "sens" else objective
   if (!is.numeric(alpha) || alpha <= 0 || alpha >= 1)
     stop("`alpha` must be strictly between 0 and 1.", call. = FALSE)
+
+  # The internal validation split (and, if requested, feature selection) draw a
+  # random subset of training subjects. Setting `seed` makes a fit exactly
+  # reproducible; leaving it NULL preserves the ambient RNG state.
+  if (!is.null(seed)) {
+    if (!is.numeric(seed) || length(seed) != 1L)
+      stop("`seed` must be a single number or NULL.", call. = FALSE)
+    set.seed(seed)
+  }
 
   dat <- .standardize_data(data, id, case, time, time_to_dx, markers, covariates)
   time_col <- time; ttd_col <- time_to_dx

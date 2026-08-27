@@ -19,6 +19,6 @@
 #' @keywords internal
 #' @importFrom nlme lme corCAR1 lmeControl fixef VarCorr getVarCov
 #' @importFrom stats as.formula ave coef cov lm median optim predict quantile var
-#' @importFrom graphics abline axis barplot legend lines mtext par text
+#' @importFrom graphics abline barplot par
 #' @importFrom utils combn
 "_PACKAGE"

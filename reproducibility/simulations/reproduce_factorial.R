@@ -104,7 +104,9 @@ run_cell <- function(R, gen_args, markers, spec, ar1, use_slope) {
   })
   acc <- acc[vapply(acc, is.list, logical(1))]
   sensM <- sapply(acc, function(o) o$sens); leadM <- sapply(acc, function(o) o$lead)
-  list(sensMean = rowMeans(sensM, na.rm = TRUE), leadMean = rowMeans(leadM, na.rm = TRUE))
+  list(sensMean = rowMeans(sensM, na.rm = TRUE), leadMean = rowMeans(leadM, na.rm = TRUE),
+       sensSD   = apply(sensM, 1, stats::sd, na.rm = TRUE),
+       leadSD   = apply(leadM, 1, stats::sd, na.rm = TRUE))
 }
 
 ## ---- factorial grid --------------------------------------------------------
@@ -115,6 +117,7 @@ grid <- expand.grid(corr = c("low", "high", "block"), spar = c(0.4, 0.6),
 rows <- c("Best-marginal PEB", "Equal-weights", "PCA-1", "iPEB")
 
 sens_cells <- list(); lead_cells <- list()
+sens_sd_cells <- list(); lead_sd_cells <- list()
 for (P in c(5, 10)) {
   MK <- paste0("M", 1:P)
   for (i in seq_len(nrow(grid))) {
@@ -127,21 +130,27 @@ for (P in c(5, 10)) {
                 tag, res$sensMean["iPEB"], res$sensMean["Best-marginal PEB"],
                 res$sensMean["Equal-weights"], res$sensMean["PCA-1"]))
     sens_cells[[tag]] <- res$sensMean[rows]; lead_cells[[tag]] <- res$leadMean[rows]
+    sens_sd_cells[[tag]] <- res$sensSD[rows]; lead_sd_cells[[tag]] <- res$leadSD[rows]
   }
 }
 
 sens_tab <- do.call(rbind, sens_cells); lead_tab <- do.call(rbind, lead_cells)
+sens_sd_tab <- do.call(rbind, sens_sd_cells); lead_sd_tab <- do.call(rbind, lead_sd_cells)
 write.csv(round(sens_tab, 4), "reproduce_factorial_SensW_by_cell.csv")
 write.csv(round(lead_tab, 4), "reproduce_factorial_LT_by_cell.csv")
+# Per-cell SDs across the Monte Carlo cohorts: these are the parenthesised
+# entries of Web Tables 1-2 in the supplement.
+write.csv(round(sens_sd_tab, 4), "reproduce_factorial_SensW_SD_by_cell.csv")
+write.csv(round(lead_sd_tab, 4), "reproduce_factorial_LT_SD_by_cell.csv")
 
 cat("\n=== mean Sens_W by method across all 48 cells ===\n")
 print(round(colMeans(sens_tab), 3))
-cat("Paper: iPEB 0.343 ; best-marginal 0.316 ; equal-weight 0.308 ; PCA-1 0.305\n")
+cat("Paper: iPEB 0.342 ; best-marginal 0.316 ; equal-weight 0.308 ; PCA-1 0.305\n")
 cat(sprintf("iPEB beat: best-marginal in %d/48, equal-weight in %d/48, PCA-1 in %d/48 cells\n",
             sum(sens_tab[, "iPEB"] > sens_tab[, "Best-marginal PEB"]),
             sum(sens_tab[, "iPEB"] > sens_tab[, "Equal-weights"]),
             sum(sens_tab[, "iPEB"] > sens_tab[, "PCA-1"])))
-cat("Paper: 39/48, 46/48, 47/48\n")
+cat("Paper: 39/48, 45/48, 45/48\n")
 
 png("reproduce_factorial_summary.png", width = 2600, height = 2600, res = 300)
 graphics::par(mar = c(16, 5, 1.5, 1), cex.lab = 1.8, cex.axis = 1.6, cex.main = 1.7)
