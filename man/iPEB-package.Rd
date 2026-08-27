@@ -34,7 +34,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Bitan Sarkar \email{bitansarkar010899@gmail.com} (\href{https://orcid.org/0009-0000-5178-5934}{ORCID})
+\strong{Maintainer}: Bitan Sarkar \email{bitansarkar010899@gmail.com} (\href{https://orcid.org/0009-0000-5178-5934}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{

@@ -22,7 +22,8 @@ ipeb_run(
   n_markers = NULL,
   validation_frac = 0.25,
   specificities = NULL,
-  eval_window = NULL
+  eval_window = NULL,
+  seed = NULL
 )
 }
 \arguments{
@@ -72,6 +73,9 @@ Defaults to \code{alpha}.}
 
 \item{eval_window}{Optional evaluation detection window in months (passed to
 \code{\link{evaluate}}); \code{NULL} reuses the training window.}
+
+\item{seed}{Optional single number passed to \code{\link{ipeb}} to fix its
+internal validation split, making the fit exactly reproducible.}
 }
 \value{
 A list with two elements: \code{fit} (the fitted \code{"ipeb"}

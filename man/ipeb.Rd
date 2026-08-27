@@ -19,7 +19,8 @@ ipeb(
   innovation = c("auto", "ar1", "iid"),
   select = c("none", "backward"),
   n_markers = NULL,
-  validation_frac = 0.25
+  validation_frac = 0.25,
+  seed = NULL
 )
 }
 \arguments{
@@ -61,6 +62,12 @@ innovations.}
 \item{validation_frac}{Fraction of training subjects held out as an internal
 validation slice to choose the combiner variant and drive selection
 (default \code{0.25}).}
+
+\item{seed}{Optional single number. `ipeb()` draws an internal validation
+split of the training subjects (and, when `select` is not `"none"`, uses
+it for feature selection), so repeated calls on identical data can return
+slightly different weights. Supplying `seed` fixes that draw and makes a
+fit exactly reproducible; the default `NULL` leaves the RNG untouched.}
 }
 \value{
 An object of class \code{"ipeb"}: a list with the fitted weights,

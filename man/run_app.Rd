@@ -22,8 +22,8 @@ held-out evaluation interactively.
 }
 \details{
 The app requires the \pkg{shiny} package (a suggested dependency); install it
-with \code{install.packages("shiny")} if needed. Users without R can instead
-use the hosted version linked from the package README.
+with \code{install.packages("shiny")} if needed. A hosted, browser-based
+version for users without R will be linked from the package README once deployed.
 }
 \examples{
 \dontrun{
