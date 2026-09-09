@@ -26,8 +26,8 @@ with \code{install.packages("shiny")} if needed. A hosted, browser-based
 version for users without R will be linked from the package README once deployed.
 }
 \examples{
-\dontrun{
-run_app()
+if (interactive()) {
+  run_app()
 }
 
 }

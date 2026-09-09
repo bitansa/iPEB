@@ -1,3 +1,10 @@
+# iPEB 0.1.1
+
+* Addressed CRAN reviewer feedback on the initial submission: removed the single
+  quotes around the acronym PEB in the Description (quotes are reserved for
+  package, software, and API names), and changed the `run_app()` example from
+  `\dontrun{}` to `if (interactive()) { ... }`.
+
 # iPEB 0.1.0
 
 * First release.

@@ -16,8 +16,8 @@
 #' @return Invisibly \code{NULL}; called for the side effect of launching the app.
 #'
 #' @examples
-#' \dontrun{
-#' run_app()
+#' if (interactive()) {
+#'   run_app()
 #' }
 #'
 #' @seealso \code{\link{ipeb}}

@@ -10,23 +10,29 @@ export(ipeb)
 export(ipeb_innovations)
 export(ipeb_run)
 export(run_app)
-importFrom(graphics,abline)
-importFrom(graphics,barplot)
-importFrom(graphics,par)
-importFrom(nlme,VarCorr)
-importFrom(nlme,corCAR1)
-importFrom(nlme,fixef)
-importFrom(nlme,getVarCov)
-importFrom(nlme,lme)
-importFrom(nlme,lmeControl)
-importFrom(stats,as.formula)
-importFrom(stats,ave)
-importFrom(stats,coef)
-importFrom(stats,cov)
-importFrom(stats,lm)
-importFrom(stats,median)
-importFrom(stats,optim)
-importFrom(stats,predict)
-importFrom(stats,quantile)
-importFrom(stats,var)
+importFrom(graphics,
+  abline,
+  barplot,
+  par
+)
+importFrom(nlme,
+  VarCorr,
+  corCAR1,
+  fixef,
+  getVarCov,
+  lme,
+  lmeControl
+)
+importFrom(stats,
+  as.formula,
+  ave,
+  coef,
+  cov,
+  lm,
+  median,
+  optim,
+  predict,
+  quantile,
+  var
+)
 importFrom(utils,combn)

@@ -1,7 +1,7 @@
 Package: iPEB
 Type: Package
 Title: Improved Parametric Empirical Bayes for Longitudinal Biomarker Analysis
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Bitan", "Sarkar", email = "bitansarkar010899@gmail.com",
            role = c("aut", "cre", "cph"), comment = c(ORCID = "0009-0000-5178-5934")),
@@ -11,7 +11,7 @@ Authors@R: c(
     person("Samir", "Hanash", role = "aut"),
     person("Kim-Anh", "Do", role = "aut"),
     person("Ehsan", "Irajizad", role = "aut"))
-Description: Extends parametric empirical Bayes ('PEB') for longitudinal
+Description: Extends parametric empirical Bayes (PEB) for longitudinal
     biomarker screening with a time-gap-aware
     standardization layer, covariate adjustment, and objective-driven
     multi-marker weighting. The layer models each subject's biomarker history
@@ -34,5 +34,5 @@ Suggests: testthat (>= 3.0.0), knitr, rmarkdown, shiny
 VignetteBuilder: knitr
 URL: https://github.com/bitansa/iPEB
 BugReports: https://github.com/bitansa/iPEB/issues
-RoxygenNote: 7.3.3
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

@@ -1,6 +1,18 @@
 ## Submission
 
-This is a new release: iPEB 0.1.0.
+This is a resubmission of a new release: iPEB 0.1.1.
+
+Thank you for the review. Both points have been addressed:
+
+* "Please only write package names, software names and API names in single
+  quotes ... please omit them around acronyms." The single quotes around the
+  acronym PEB have been removed from the Description; it now reads
+  "Extends parametric empirical Bayes (PEB) for longitudinal biomarker
+  screening ...". No other quoted names remain in the Title or Description.
+* "Functions which are supposed to only run interactively should be wrapped in
+  if(interactive())." The example for `run_app()`, which launches the bundled
+  Shiny application, now uses `if (interactive()) { run_app() }` instead of
+  `\dontrun{}`.
 
 ## Test environments
 
@@ -33,5 +45,6 @@ package.
   Data Access System and is not distributed with the package.
 * Examples that fit models are wrapped in `\donttest{}` to keep total example
   time small; they run in well under 5 seconds with `--run-donttest`.
-* `run_app()` launches an interactive Shiny application and is therefore wrapped
-  in `\dontrun{}`; `shiny` is a suggested dependency and its absence is handled.
+* `run_app()` launches an interactive Shiny application and its example is
+  therefore wrapped in `if (interactive())`; `shiny` is a suggested dependency
+  and its absence is handled with a clear error message.

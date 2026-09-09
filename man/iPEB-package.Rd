@@ -38,6 +38,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Bitan Sarkar \email{bitansarkar010899@gmail.com} (\href{https://orcid.org/0009-0000-5178-5934}{ORCID}) [copyright holder]
   \item Ana Maria Kenney
   \item James P. Long
   \item Johannes F. Fahrmann
