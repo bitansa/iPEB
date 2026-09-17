@@ -28,9 +28,12 @@ Thank you for the review. Both points have been addressed:
 
 0 errors | 0 warnings | 1 note.
 
-The single NOTE is the standard "New submission" flag. Where it also lists
-"autocorrelated" as possibly misspelled in the DESCRIPTION, this is a
-correctly-spelled technical term (autocorrelated residuals).
+The single NOTE is the standard "New submission" flag. It also lists "PEB" and
+"autocorrelated" as possibly misspelled in the DESCRIPTION. Both are correct:
+"PEB" is the acronym for parametric empirical Bayes, spelled out immediately
+before it in the same sentence (the single quotes previously around it were
+removed at the reviewer's request, which is why the spell checker now sees it),
+and "autocorrelated" is a standard statistical term (autocorrelated residuals).
 
 A locally-produced NOTE, "unable to verify current time", appears only on the
 maintainer's machine when the time server is unreachable; it is unrelated to the

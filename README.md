@@ -2,6 +2,8 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/bitansa/iPEB/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bitansa/iPEB/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/iPEB)](https://CRAN.R-project.org/package=iPEB)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/iPEB)](https://CRAN.R-project.org/package=iPEB)
 <!-- badges: end -->
 
 **Improved Parametric Empirical Bayes for Longitudinal Biomarker Analysis**
@@ -18,7 +20,22 @@ screening with three ingredients:
 3. optional **covariate adjustment** and **feature selection**, with an
    automatically chosen scalar or multivariate combiner.
 
+## Try it in your browser
+
+A hosted, browser-based version of the iPEB explorer is available at
+**https://bitansa.github.io/iPEB/** — no R installation required. The app runs R
+entirely inside your own browser (WebAssembly), so any CSV you load stays on
+your machine and is never uploaded to a server.
+
 ## Installation
+
+iPEB is on CRAN:
+
+```r
+install.packages("iPEB")
+```
+
+The development version can be installed from GitHub:
 
 ```r
 # install.packages("remotes")
@@ -98,8 +115,14 @@ iPEB::run_app()
 
 It exposes the objective, operating specificity, slope and innovation switches,
 covariates, optional feature selection, and evaluation specificities, and runs
-`ipeb()`/`evaluate()` under the hood. A hosted, browser-based version for users
-without R will be linked here once deployed.
+`ipeb()`/`evaluate()` under the hood.
+
+For users without R, the same app is hosted at
+**https://bitansa.github.io/iPEB/**. It is built with
+[shinylive](https://posit-dev.github.io/r-shinylive/), which compiles the app to
+WebAssembly: R runs in the visitor's browser rather than on a server, so uploaded
+data never leaves their machine. The first load downloads the R runtime and takes
+roughly 30-60 seconds; subsequent visits are cached and fast.
 
 ## Data format
 

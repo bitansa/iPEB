@@ -19,3 +19,6 @@ Thumbs.db
 /reproducibility/simulations/*.png
 /reproducibility/simulations/*.csv
 /reproducibility/lung/synthetic_lung.csv
+
+# shinylive export output
+_site/

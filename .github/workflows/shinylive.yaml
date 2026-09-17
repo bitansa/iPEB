@@ -1,0 +1,63 @@
+# Export the bundled iPEB Shiny app to a static shinylive site and publish it
+# on GitHub Pages. The exported app runs R in the visitor's own browser via
+# WebAssembly (webR), so any CSV a user loads never leaves their machine.
+#
+# One-time setup in the repository (see README-shinylive.md):
+#   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'inst/shiny-app/**'
+      - 'R/**'
+      - 'DESCRIPTION'
+      - '.github/workflows/shinylive.yaml'
+  workflow_dispatch:
+
+name: shinylive
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once; let a newer push cancel an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::shinylive, any::shiny
+          needs: website
+
+      - name: Export app to static shinylive site
+        run: |
+          # shinylive resolves the app's R dependencies (shiny, iPEB, nlme)
+          # from the webR binary repository at https://repo.r-wasm.org.
+          shinylive::export(appdir = "inst/shiny-app", destdir = "_site")
+        shell: Rscript {0}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: export
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

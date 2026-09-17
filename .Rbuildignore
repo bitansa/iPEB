@@ -6,6 +6,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^cran-comments\.md$
+^README-shinylive\.md$
+^_site$
 ^\.Rbuildignore$
 ^\.Rhistory$
 ^\.DS_Store$
