@@ -2,6 +2,13 @@
 # on GitHub Pages. The exported app runs R in the visitor's own browser via
 # WebAssembly (webR), so any CSV a user loads never leaves their machine.
 #
+# The app is assembled to be self-contained: the package's R sources are copied
+# next to app.R and sourced directly, rather than installed as a package. This
+# matters because shinylive can only install packages that exist as WebAssembly
+# binaries at https://repo.r-wasm.org, and that repository mirrors CRAN on its
+# own schedule. Sourcing the files needs only 'shiny' from there; every iPEB
+# call into nlme is already namespace-qualified (nlme::), and nlme ships with R.
+#
 # One-time setup in the repository (see README-shinylive.md):
 #   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
 on:
@@ -10,7 +17,7 @@ on:
     paths:
       - 'inst/shiny-app/**'
       - 'R/**'
-      - 'DESCRIPTION'
+      - 'data/**'
       - '.github/workflows/shinylive.yaml'
   workflow_dispatch:
 
@@ -30,7 +37,7 @@ jobs:
   export:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -41,11 +48,46 @@ jobs:
           extra-packages: any::shinylive, any::shiny
           needs: website
 
+      - name: Assemble self-contained app
+        run: |
+          app_src <- "inst/shiny-app/app.R"
+          stopifnot(file.exists(app_src))
+          unlink("_app", recursive = TRUE)
+          dir.create("_app/ipeb-R", recursive = TRUE)
+
+          # Package R sources, minus run_app() (it exists only to launch this app).
+          src <- list.files("R", pattern = "[.][Rr]$", full.names = TRUE)
+          src <- src[basename(src) != "run_app.R"]
+          stopifnot(length(src) > 0)
+          file.copy(src, "_app/ipeb-R", overwrite = TRUE)
+          file.copy("data/ipeb_example.rda", "_app/ipeb_example.rda", overwrite = TRUE)
+
+          app <- readLines(app_src, warn = FALSE)
+
+          # library(iPEB) -> source the copied package files
+          i <- grep("^\\s*library\\(iPEB\\)\\s*$", app)
+          stopifnot(length(i) == 1)
+          app[i] <- paste(
+            'for (f in sort(list.files("ipeb-R", pattern = "[.][Rr]$",',
+            'full.names = TRUE))) source(f)')
+
+          # data("ipeb_example", package = "iPEB") -> load the copied .rda
+          j <- grep('data\\("ipeb_example"', app)
+          stopifnot(length(j) == 1)
+          app[j] <- '      load("ipeb_example.rda")'
+
+          writeLines(app, "_app/app.R")
+
+          # Fail loudly if the assembled app is not valid R.
+          invisible(parse("_app/app.R"))
+          for (f in list.files("_app/ipeb-R", full.names = TRUE)) invisible(parse(f))
+          cat("assembled _app/: app.R +", length(src), "R files + example data\n")
+        shell: Rscript {0}
+
       - name: Export app to static shinylive site
         run: |
-          # shinylive resolves the app's R dependencies (shiny, iPEB, nlme)
-          # from the webR binary repository at https://repo.r-wasm.org.
-          shinylive::export(appdir = "inst/shiny-app", destdir = "_site")
+          shinylive::export(appdir = "_app", destdir = "_site")
+          stopifnot(file.exists("_site/index.html"))
         shell: Rscript {0}
 
       - uses: actions/upload-pages-artifact@v3

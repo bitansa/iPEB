@@ -20,28 +20,46 @@ usage limit.
 The first successful run publishes the site; later pushes that touch
 `inst/shiny-app/`, `R/`, or `DESCRIPTION` refresh it automatically.
 
-## Dependency availability (read this if the export step fails)
+## Why the app is assembled instead of installed
 
-`shinylive::export()` installs the app's R dependencies as WebAssembly binaries
-from <https://repo.r-wasm.org>, which mirrors CRAN. The app needs `shiny`,
-`iPEB`, and `nlme`; `shiny` and `nlme` have been there for a long time.
+`shinylive::export()` can only install packages that exist as WebAssembly
+binaries at <https://repo.r-wasm.org>, which mirrors CRAN on its own schedule.
+iPEB reached CRAN on 2026-09-17, and its WebAssembly binary did not appear in
+that repository in the days afterwards, so `library(iPEB)` failed at runtime in
+the browser with "there is no package called 'iPEB'" even though the export and
+deploy steps both succeeded.
 
-`iPEB` reached CRAN on 2026-09-17, and the webR repository rebuilds from CRAN on
-its own schedule, so the binary may not exist for a few days after publication.
-If the export step fails with a message about `iPEB` not being available, that
-is the reason: wait a few days and re-run the workflow from the Actions tab.
-Nothing needs to change in the code. iPEB is a pure R package
-(`NeedsCompilation: no`), so it should build for WebAssembly without trouble.
+The workflow therefore assembles a **self-contained** app rather than relying on
+that repository:
 
-To check availability before re-running, search for `iPEB` in
-<https://repo.r-wasm.org/bin/emscripten/contrib/4.4/PACKAGES>.
+- the package's `R/*.R` sources are copied to `_app/ipeb-R/` and sourced
+  directly by `app.R` (replacing `library(iPEB)`);
+- `data/ipeb_example.rda` is copied next to the app and loaded with `load()`
+  (replacing the `data()` call);
+- `R/run_app.R` is skipped, since it exists only to launch this same app.
+
+This works because iPEB is pure R (`NeedsCompilation: no`) and every call it
+makes into nlme is namespace-qualified (`nlme::lme`, and so on), so no attach
+step is needed and nlme ships with R itself. The only package shinylive has to
+fetch is `shiny`.
+
+The sources are copied at build time from `R/`, so there is no duplicated code
+in the repository: `R/` remains the single source of truth, and the deployed app
+updates automatically whenever `R/`, `data/`, or the app changes.
+
+If iPEB does eventually appear in the webR repository, this setup keeps working
+and needs no change.
 
 ## Testing the export locally
 
+Run the "Assemble self-contained app" step from
+`.github/workflows/shinylive.yaml` in an R session at the package root, then:
+
 ```r
 install.packages("shinylive")
-shinylive::export(appdir = "inst/shiny-app", destdir = "_site")
+shinylive::export(appdir = "_app", destdir = "_site")
 httpuv::runStaticServer("_site")   # opens the exported app in a browser
 ```
 
-Delete `_site/` afterwards; it is build output and is not tracked.
+Delete `_app/` and `_site/` afterwards; both are build output and neither is
+tracked.
