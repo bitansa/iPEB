@@ -137,6 +137,26 @@ controlled-access through the NCI Cancer Data Access System (CDAS) under its
 standard data-use agreement and are not distributed with this package. The
 bundled `ipeb_example` dataset is entirely synthetic.
 
+## Citation
+
+If you use iPEB, please cite the accompanying paper:
+
+Sarkar, B., Kenney, A. M., Long, J. P., Fahrmann, J. F., Hanash, S., Do, K.-A., and
+Irajizad, E. (2026). Multi-Objective Composite Longitudinal Biomarker Scores for Improved
+Cancer Risk Assessment. arXiv preprint
+[arXiv:2609.08225](https://arxiv.org/abs/2609.08225).
+
+```bibtex
+@article{sarkar2026ipeb,
+  title   = {Multi-Objective Composite Longitudinal Biomarker Scores for Improved Cancer Risk Assessment},
+  author  = {Sarkar, Bitan and Kenney, Ana Maria and Long, James P. and Fahrmann, Johannes F. and
+             Hanash, Samir and Do, Kim-Anh and Irajizad, Ehsan},
+  journal = {arXiv preprint arXiv:2609.08225},
+  year    = {2026},
+  doi     = {10.48550/arXiv.2609.08225}
+}
+```
+
 ## License
 
-MIT © iPEB authors. A manuscript describing the method is in preparation.
+MIT © iPEB authors.
